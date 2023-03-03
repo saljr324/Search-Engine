@@ -9,8 +9,8 @@ import re
 from difflib import SequenceMatcher
 
 
-token = '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'
-client = Github(token)
+token = ''
+client = Github()
 
 @st.cache_data
 def get_repos():
