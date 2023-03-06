@@ -21,14 +21,12 @@ def get_repos():
     repo_list = []
     for i in modules_org:
         repo_list.append(i)
-    print(len(repo_list))
     
     toremove = 0
     for i in range(len(repo_list)):
         if repo_list[i].full_name == 'ds-modules/Library-HTRC':
             toremove = i
     repo_list.pop(toremove)
-    print(len(repo_list))
 
     return repo_list
 
@@ -130,9 +128,14 @@ with open('Streamlit/filepaths.txt', 'r') as f:
 def similar(a, b):
     return SequenceMatcher(None, a, b).ratio()
 
-title = st.text_input('What are you looking for?', '')
+st.title('Jupyter Notebook Search Engine')
+st.caption('For use on github.com/ds-modules')
+st.subheader('What topic are you looking for?')
+title = st.text_input('Keywords:', '')
 truth = []
 raw_contents = []
+unique_repos = []
+
 if title:
     st.write('Note: Currently only searching 163/170 public repos. Fix coming soon.')
     # for i in range(len(allrepos)):
@@ -168,6 +171,8 @@ if title:
                     #         if raw_contents_created < contentfile_created:
                     #             truth.pop(i)
                     truth.append([i, j])
+                    if i not in unique_repos:
+                        unique_repos.append(i)
                     raw_contents.append(check.lower())
 
     for i in range(len(second35_repos)):
@@ -185,6 +190,8 @@ if title:
                     #         if raw_contents_created < contentfile_created:
                     #             truth.pop(i)
                     truth.append([35 + i, j])
+                    if 35 + i not in unique_repos:
+                        unique_repos.append(35 + i)
                     raw_contents.append(check.lower())
 
     for i in range(len(third35_repos)):
@@ -202,6 +209,8 @@ if title:
                     #         if raw_contents_created < contentfile_created:
                     #             truth.pop(i)
                     truth.append([70 + i, j])
+                    if 70 + i not in unique_repos:
+                        unique_repos.append(70 + i)
                     raw_contents.append(check.lower())
                     
     for i in range(len(fourth35_repos)):
@@ -219,6 +228,8 @@ if title:
                     #         if raw_contents_created < contentfile_created:
                     #             truth.pop(i)
                     truth.append([105 + i, j])
+                    if 105 + i not in unique_repos:
+                        unique_repos.append(105 + i)
                     raw_contents.append(check.lower())
         
     for i in range(len(fifth23_repos)):
@@ -237,15 +248,34 @@ if title:
                     #         if raw_contents_created < contentfile_created:
                     #             truth.pop(i)
                     truth.append([140 + i, j])
+                    if 140 + i not in unique_repos:
+                        unique_repos.append(140 + i)
                     raw_contents.append(check.lower())
 
-    print(truth)
+    repo_names = [repo_list[i] for i in unique_repos]
+    repo_tabs = [re.findall(r'\/(.+)', i.full_name)[0] for i in repo_names] 
+    truth.reverse()
+    repo_tabs.reverse()
+    
+    tabs = st.tabs(repo_tabs)
+    current_repo = repo_tabs[0]
+    count = 0
+    
     for i in range(len(truth)):
         repo = truth[i][0]
         file = truth[i][1]
         contentfile = eval(filepaths[repo])[file]
         path = re.findall('=.*', contentfile)[0][2:-2]
-        st.write(repo_list[repo].get_contents(path = path).html_url)
+
+        url = repo_list[repo].get_contents(path = path).html_url
+        clean_url = re.findall(r'(?:/)(.*?)(?:.)', url)
+        repo = re.search(r'ds-modules/(.*?)/', url).group(1)
+        if repo != current_repo:
+            count += 1
+            current_repo = repo_tabs[count]
+        with tabs[count]:
+            st.write(url)
+
     if len(truth) == 0:
         st.write('None Found')
     else:
