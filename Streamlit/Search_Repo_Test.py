@@ -106,22 +106,22 @@ import ast
 # with open('163repos.txt', 'r') as f:
 #     allrepos = [list(eval(line)) for line in f]
 
-with open('first35.txt', 'r') as f:
+with open('Streamlit/first35.txt', 'r') as f:
     first35_repos = [list(ast.literal_eval(line)) for line in f]
 
-with open('second35.txt', 'r') as f:
+with open('Streamlit/second35.txt', 'r') as f:
     second35_repos = [list(ast.literal_eval(line)) for line in f]
 
-with open('third35.txt', 'r') as f:
+with open('Streamlit/third35.txt', 'r') as f:
     third35_repos = [list(ast.literal_eval(line)) for line in f]
 
-with open('fourth35.txt', 'r') as f:
+with open('Streamlit/fourth35.txt', 'r') as f:
     fourth35_repos = [list(ast.literal_eval(line)) for line in f]
 
-with open('fifth23.txt', 'r') as f:
+with open('Streamlit/fifth23.txt', 'r') as f:
     fifth23_repos = [list(ast.literal_eval(line)) for line in f]
 
-with open('filepaths.txt', 'r') as f:
+with open('Streamlit/filepaths.txt', 'r') as f:
     filepaths = [line for line in f]
 
 def similar(a, b):
