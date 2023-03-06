@@ -12,7 +12,7 @@ from difflib import SequenceMatcher
 token = ''
 client = Github()
 
-st.cache_resource
+@st.cache_resource
 def get_repos():
     modules_org = client.get_organization('ds-modules').get_repos()
     repo_list = []
