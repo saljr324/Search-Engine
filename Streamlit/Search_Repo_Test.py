@@ -256,27 +256,25 @@ if title:
     repo_tabs = [re.findall(r'\/(.+)', i.full_name)[0] for i in repo_names] 
     truth.reverse()
     repo_tabs.reverse()
-    
-    tabs = st.tabs(repo_tabs)
-    current_repo = repo_tabs[0]
-    count = 0
-    
-    for i in range(len(truth)):
-        repo = truth[i][0]
-        file = truth[i][1]
-        contentfile = eval(filepaths[repo])[file]
-        path = re.findall('=.*', contentfile)[0][2:-2]
-
-        url = repo_list[repo].get_contents(path = path).html_url
-        clean_url = re.findall(r'(?:/)(.*?)(?:.)', url)
-        repo = re.search(r'ds-modules/(.*?)/', url).group(1)
-        if repo != current_repo:
-            count += 1
-            current_repo = repo_tabs[count]
-        with tabs[count]:
-            st.write(url)
-
     if len(truth) == 0:
-        st.write('None Found')
+            st.write('None Found')
     else:
+        tabs = st.tabs(repo_tabs)
+        current_repo = repo_tabs[0]
+        count = 0
+
+        for i in range(len(truth)):
+            repo = truth[i][0]
+            file = truth[i][1]
+            contentfile = eval(filepaths[repo])[file]
+            path = re.findall('=.*', contentfile)[0][2:-2]
+
+            url = repo_list[repo].get_contents(path = path).html_url
+            clean_url = re.findall(r'(?:/)(.*?)(?:.)', url)
+            repo = re.search(r'ds-modules/(.*?)/', url).group(1)
+            if repo != current_repo:
+                count += 1
+                current_repo = repo_tabs[count]
+            with tabs[count]:
+                st.write(url)
         st.write('Complete')
