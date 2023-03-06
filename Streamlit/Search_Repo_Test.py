@@ -126,7 +126,7 @@ def similar(a, b):
     return SequenceMatcher(None, a, b).ratio()
 
 st.title('Jupyter Notebook Search Engine')
-st.caption('For use on github.com/ds-modules')
+st.caption('For use on github.com/ds-modules. Note: Searching only 163/170 public repos. Fix coming soon.')
 st.subheader('What topic are you looking for?')
 title = st.text_input('Keywords:', '').lower()
 title = ' ' + title
