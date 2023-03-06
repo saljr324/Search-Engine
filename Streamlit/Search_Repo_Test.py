@@ -152,4 +152,4 @@ try:
                 st.write(url)
         st.write('Complete')
 except IndexError:
-    return None
+    st.write(' ')
