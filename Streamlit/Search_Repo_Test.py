@@ -141,7 +141,6 @@ raw_contents = []
 unique_repos = []
 
 if title:
-    st.write('Note: Currently only searching 163/170 public repos. Fix coming soon.')
 
     for i in range(len(first35_repos)):
         for j in range(len(first35_repos[i])):
