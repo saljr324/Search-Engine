@@ -7,10 +7,15 @@ import pickle
 import json
 import re
 from difflib import SequenceMatcher
+import os
 
 
-token = ''
-client = Github()
+# token = ''
+# client = Github()
+
+GITHUB_API_CREDENTIALS = os.getenv("GITHUB_API_CREDENTIALS")
+client_id, client_secret = GITHUB_API_CREDENTIALS.split(":")
+client = Github(client_id, client_secret)
 
 @st.cache_resource
 def get_repos():
