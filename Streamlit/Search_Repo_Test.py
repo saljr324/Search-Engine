@@ -104,9 +104,6 @@ def get_all_contents():
 
 import ast
 
-# with open('163repos.txt', 'r') as f:
-#     allrepos = [list(eval(line)) for line in f]
-
 with open('Streamlit/first35.txt', 'r') as f:
     first35_repos = [list(ast.literal_eval(line)) for line in f]
 
@@ -132,29 +129,13 @@ st.title('Jupyter Notebook Search Engine')
 st.caption('For use on github.com/ds-modules')
 st.subheader('What topic are you looking for?')
 title = st.text_input('Keywords:', '').lower()
+title = ' ' + title
 truth = []
 raw_contents = []
 unique_repos = []
 
 if title:
     st.write('Note: Currently only searching 163/170 public repos. Fix coming soon.')
-    # for i in range(len(allrepos)):
-    #     for j in range(len(allrepos[i])):
-    #         check = allrepos[i][j][0]
-    #         if type(check) == str:
-    #             if title in check.lower():
-    #                 contentfile = eval(filepaths[i])[j]
-    #                 # for x in range(len(raw_contents)):
-    #                 #     if len(raw_contents) == 0:
-    #                 #         continue
-    #                 #     elif similar(raw_contents[x], check.lower()) > .8:
-    #                 #         raw_contents_created = repo_list[x].created_at
-    #                 #         contentfile_created = repo_list[i].created_at
-    #                 #         if raw_contents_created < contentfile_created:
-    #                 #             truth.pop(i)
-    #                 print(repo_list[i])
-    #                 truth.append([i, j])
-    #                 raw_contents.append(check.lower())
 
     for i in range(len(first35_repos)):
         for j in range(len(first35_repos[i])):
@@ -162,14 +143,6 @@ if title:
             if type(check) == str:
                 if title in check.lower():
                     contentfile = eval(filepaths[i])[j]
-                    # for x in range(len(raw_contents)):
-                    #     if len(raw_contents) == 0:
-                    #         continue
-                    #     elif similar(raw_contents[x], check.lower()) > .8:
-                    #         raw_contents_created = repo_list[x].created_at
-                    #         contentfile_created = repo_list[i].created_at
-                    #         if raw_contents_created < contentfile_created:
-                    #             truth.pop(i)
                     truth.append([i, j])
                     if i not in unique_repos:
                         unique_repos.append(i)
@@ -181,14 +154,6 @@ if title:
             if type(check) == str:
                 if title in check.lower():
                     contentfile = eval(filepaths[35 + i])[j]
-                    # for x in range(len(raw_contents)):
-                    #     if len(raw_contents) == 0:
-                    #         continue
-                    #     elif similar(raw_contents[x], check.lower()) > .8:
-                    #         raw_contents_created = repo_list[x].created_at
-                    #         contentfile_created = repo_list[i].created_at
-                    #         if raw_contents_created < contentfile_created:
-                    #             truth.pop(i)
                     truth.append([35 + i, j])
                     if 35 + i not in unique_repos:
                         unique_repos.append(35 + i)
@@ -200,14 +165,6 @@ if title:
             if type(check) == str:
                 if title in check.lower():
                     contentfile = eval(filepaths[70 + i])[j]
-                    # for x in range(len(raw_contents)):
-                    #     if len(raw_contents) == 0:
-                    #         continue
-                    #     elif similar(raw_contents[x], check.lower()) > .8:
-                    #         raw_contents_created = repo_list[x].created_at
-                    #         contentfile_created = repo_list[i].created_at
-                    #         if raw_contents_created < contentfile_created:
-                    #             truth.pop(i)
                     truth.append([70 + i, j])
                     if 70 + i not in unique_repos:
                         unique_repos.append(70 + i)
@@ -219,14 +176,6 @@ if title:
             if type(check) == str:
                 if title in check.lower():
                     contentfile = eval(filepaths[105 + i])[j]
-                    # for x in range(len(raw_contents)):
-                    #     if len(raw_contents) == 0:
-                    #         continue
-                    #     elif similar(raw_contents[x], check.lower()) > .8:
-                    #         raw_contents_created = repo_list[x].created_at
-                    #         contentfile_created = repo_list[i].created_at
-                    #         if raw_contents_created < contentfile_created:
-                    #             truth.pop(i)
                     truth.append([105 + i, j])
                     if 105 + i not in unique_repos:
                         unique_repos.append(105 + i)
@@ -239,14 +188,6 @@ if title:
                 if title in check.lower():
                     print(140+i,j)
                     contentfile = eval(filepaths[140 + i])[j]
-                    # for x in range(len(raw_contents)):
-                    #     if len(raw_contents) == 0:
-                    #         continue
-                    #     elif similar(raw_contents[x], check.lower()) > .8:
-                    #         raw_contents_created = repo_list[x].created_at
-                    #         contentfile_created = repo_list[i].created_at
-                    #         if raw_contents_created < contentfile_created:
-                    #             truth.pop(i)
                     truth.append([140 + i, j])
                     if 140 + i not in unique_repos:
                         unique_repos.append(140 + i)
