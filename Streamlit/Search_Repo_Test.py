@@ -13,7 +13,7 @@ import os
 # token = ''
 # client = Github()
 
-client = Github('my_client_id', 'my_client_secret')
+client = Github('cec181f6847eb6472425', '1ab6e2c3b3ed83f4b25ecd390cd5ef65c629b591')
 
 @st.cache_resource
 def get_repos():
