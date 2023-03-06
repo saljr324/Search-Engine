@@ -31,29 +31,25 @@ repo_list = get_repos()
 
 import ast
 
-@st.cache_resource
-def openfiles():
-    with open('Streamlit/first35.txt', 'r') as f:
-        first35_repos = [list(ast.literal_eval(line)) for line in f]
+with open('Streamlit/first35.txt', 'r') as f:
+    first35_repos = [list(ast.literal_eval(line)) for line in f]
 
-    with open('Streamlit/second35.txt', 'r') as f:
-        second35_repos = [list(ast.literal_eval(line)) for line in f]
+with open('Streamlit/second35.txt', 'r') as f:
+    second35_repos = [list(ast.literal_eval(line)) for line in f]
 
-    with open('Streamlit/third35.txt', 'r') as f:
-        third35_repos = [list(ast.literal_eval(line)) for line in f]
+with open('Streamlit/third35.txt', 'r') as f:
+    third35_repos = [list(ast.literal_eval(line)) for line in f]
 
-    with open('Streamlit/fourth35.txt', 'r') as f:
-        fourth35_repos = [list(ast.literal_eval(line)) for line in f]
+with open('Streamlit/fourth35.txt', 'r') as f:
+    fourth35_repos = [list(ast.literal_eval(line)) for line in f]
 
-    with open('Streamlit/fifth23.txt', 'r') as f:
-        fifth23_repos = [list(ast.literal_eval(line)) for line in f]
+with open('Streamlit/fifth23.txt', 'r') as f:
+    fifth23_repos = [list(ast.literal_eval(line)) for line in f]
 
-    with open('Streamlit/filepaths.txt', 'r') as f:
-        filepaths = [line for line in f]
+with open('Streamlit/filepaths.txt', 'r') as f:
+    filepaths = [line for line in f]
 
-    return first35_repos, second35_repos, third35_repos, fourth35_repos, fifth23_repos, filepaths
 
-first35_repos, second35_repos, third35_repos, fourth35_repos, fifth23_repos, filepaths = openfiles()
 
 def similar(a, b):
     return SequenceMatcher(None, a, b).ratio()
