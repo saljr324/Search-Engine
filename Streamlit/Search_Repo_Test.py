@@ -131,7 +131,7 @@ def similar(a, b):
 st.title('Jupyter Notebook Search Engine')
 st.caption('For use on github.com/ds-modules')
 st.subheader('What topic are you looking for?')
-title = st.text_input('Keywords:', '')
+title = st.text_input('Keywords:', '').lower()
 truth = []
 raw_contents = []
 unique_repos = []
