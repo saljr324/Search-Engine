@@ -13,9 +13,7 @@ import os
 # token = ''
 # client = Github()
 
-GITHUB_API_CREDENTIALS = os.getenv("GITHUB_API_CREDENTIALS")
-client_id, client_secret = GITHUB_API_CREDENTIALS.split(":")
-client = Github(client_id, client_secret)
+client = Github('my_client_id', 'my_client_secret')
 
 @st.cache_resource
 def get_repos():
