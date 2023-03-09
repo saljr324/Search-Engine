@@ -114,7 +114,6 @@ try:
             check = fifth23_repos[i][j][0]
             if type(check) == str:
                 if title in check.lower():
-                    print(140+i,j)
                     contentfile = eval(filepaths[140 + i])[j]
                     truth.append([140 + i, j])
                     if 140 + i not in unique_repos:
