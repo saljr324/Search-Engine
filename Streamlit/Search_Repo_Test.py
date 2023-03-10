@@ -1,13 +1,9 @@
-import time
 import numpy as np
 import pandas as pd
 from github import Github
 import streamlit as st
-import pickle
 import json
 import re
-from difflib import SequenceMatcher
-import os
 
 
 client = Github('cec181f6847eb6472425', '1ab6e2c3b3ed83f4b25ecd390cd5ef65c629b591')
