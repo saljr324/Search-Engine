@@ -12,7 +12,7 @@ import os
 
 client = Github('cec181f6847eb6472425', '1ab6e2c3b3ed83f4b25ecd390cd5ef65c629b591')
 
-@st.cache_resource
+@st.cache_resource(max_entries = 3) # Number of caches that can be stored at the same time. Hopefully solves storage issue (too much cache). 
 def get_repos():
     modules_org = client.get_organization('ds-modules').get_repos()
     repo_list = []
