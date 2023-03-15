@@ -8,139 +8,41 @@ import re
 
 client = Github('cec181f6847eb6472425', '1ab6e2c3b3ed83f4b25ecd390cd5ef65c629b591')
 
-@st.cache_resource(max_entries = 3) # Number of caches that can be stored at the same time. Hopefully solves storage issue (too much cache). 
-def get_repos():
-    modules_org = client.get_organization('ds-modules').get_repos()
-    repo_list = []
-    for i in modules_org:
-        repo_list.append(i)
+def search_github(keyword, query):
+    '''
+    keyword: what you want to search (query)
+    query: https://docs.github.com/en/search-github/searching-on-github/searching-code#search-within-a-users-or-organizations-repositories
+    '''
+    contentFiles = []
+    result = client.search_code(keyword + ' ' + query)
+ 
+    for file in result:
+        contentFiles.append(file)
     
-    toremove = 0
-    for i in range(len(repo_list)):
-        if repo_list[i].full_name == 'ds-modules/Library-HTRC':
-            toremove = i
-    repo_list.pop(toremove)
+    return contentFiles
 
-    return repo_list
+st.title('Jupyter Notebook Search Engine')
+st.caption('For use on github.com/ds-modules')
+st.subheader('What topic are you looking for?')
+title = st.text_input('Keyword(s):', placeholder = 'Enter keyword(s) seperated by comma')
 
-repo_list = get_repos()
-
-import ast
-
-with open('Streamlit/first35.txt', 'r') as f:
-    first35_repos = [list(ast.literal_eval(line)) for line in f]
-
-with open('Streamlit/second35.txt', 'r') as f:
-    second35_repos = [list(ast.literal_eval(line)) for line in f]
-
-with open('Streamlit/third35.txt', 'r') as f:
-    third35_repos = [list(ast.literal_eval(line)) for line in f]
-
-with open('Streamlit/fourth35.txt', 'r') as f:
-    fourth35_repos = [list(ast.literal_eval(line)) for line in f]
-
-with open('Streamlit/fifth23.txt', 'r') as f:
-    fifth23_repos = [list(ast.literal_eval(line)) for line in f]
-
-with open('Streamlit/filepaths.txt', 'r') as f:
-    filepaths = [line for line in f]
-
-
-
-def similar(a, b):
-    return SequenceMatcher(None, a, b).ratio()
-
-try:
-    st.title('Jupyter Notebook Search Engine')
-    st.caption('For use on github.com/ds-modules. Note: Searching only 163/170 public repos. Fix coming soon.')
-    st.subheader('What topic are you looking for?')
-    title = st.text_input('Keywords:', '').lower()
-    title = ' ' + title
-    truth = []
-    raw_contents = []
-    unique_repos = []
-
-
-    for i in range(len(first35_repos)):
-        for j in range(len(first35_repos[i])):
-            check = first35_repos[i][j][0]
-            if type(check) == str:
-                if title in check.lower():
-                    contentfile = eval(filepaths[i])[j]
-                    truth.append([i, j])
-                    if i not in unique_repos:
-                        unique_repos.append(i)
-                    raw_contents.append(check.lower())
-
-    for i in range(len(second35_repos)):
-        for j in range(len(second35_repos[i])):
-            check = second35_repos[i][j][0]
-            if type(check) == str:
-                if title in check.lower():
-                    contentfile = eval(filepaths[35 + i])[j]
-                    truth.append([35 + i, j])
-                    if 35 + i not in unique_repos:
-                        unique_repos.append(35 + i)
-                    raw_contents.append(check.lower())
-
-    for i in range(len(third35_repos)):
-        for j in range(len(third35_repos[i])):
-            check = third35_repos[i][j][0]
-            if type(check) == str:
-                if title in check.lower():
-                    contentfile = eval(filepaths[70 + i])[j]
-                    truth.append([70 + i, j])
-                    if 70 + i not in unique_repos:
-                        unique_repos.append(70 + i)
-                    raw_contents.append(check.lower())
-
-    for i in range(len(fourth35_repos)):
-        for j in range(len(fourth35_repos[i])):
-            check = fourth35_repos[i][j][0]
-            if type(check) == str:
-                if title in check.lower():
-                    contentfile = eval(filepaths[105 + i])[j]
-                    truth.append([105 + i, j])
-                    if 105 + i not in unique_repos:
-                        unique_repos.append(105 + i)
-                    raw_contents.append(check.lower())
-
-    for i in range(len(fifth23_repos)):
-        for j in range(len(fifth23_repos[i])):
-            check = fifth23_repos[i][j][0]
-            if type(check) == str:
-                if title in check.lower():
-                    contentfile = eval(filepaths[140 + i])[j]
-                    truth.append([140 + i, j])
-                    if 140 + i not in unique_repos:
-                        unique_repos.append(140 + i)
-                    raw_contents.append(check.lower())
-
-    repo_names = [repo_list[i] for i in unique_repos]
-    repo_tabs = [re.findall(r'\/(.+)', i.full_name)[0] for i in repo_names] 
-    truth.reverse()
-    repo_tabs.reverse()
-    if len(truth) == 0:
-            st.write('None Found')
+if title:
+    contentFiles = search_github(title, 'org:ds-modules extension:ipynb')
+    if len(contentFiles) == 0:
+        st.write('None Found')
     else:
+        repo_tabs = []
+        for i in range(len(contentFiles)):
+            repo = re.search(r'ds-modules/(.*?)/', contentFiles[i].html_url).group(1)
+            if repo not in repo_tabs:
+                repo_tabs.append(repo)
+        
+        st.write(f'Found {len(contentFiles)} Notebooks in {len(repo_tabs)} repositories')
         tabs = st.tabs(repo_tabs)
-        current_repo = repo_tabs[0]
-        count = 0
-
-        for i in range(len(truth)):
-            repo = truth[i][0]
-            file = truth[i][1]
-            contentfile = eval(filepaths[repo])[file]
-            path = re.findall('=.*', contentfile)[0][2:-2]
-
-            url = repo_list[repo].get_contents(path = path).html_url
-            clean_url = re.findall(r'(?:/)(.*?)(?:.)', url)
-            repo = re.search(r'ds-modules/(.*?)/', url).group(1)
-            if repo != current_repo:
-                count += 1
-                current_repo = repo_tabs[count]
-            with tabs[count]:
-                st.write(url)
+        current_repo = re.search(r'ds-modules/(.*?)/', contentFiles[0].html_url).group(1)
+        for i in range(len(contentFiles)):
+            repo = re.search(r'ds-modules/(.*?)/', contentFiles[i].html_url).group(1)
+            index = repo_tabs.index(repo)
+            with tabs[index]:
+                st.write(contentFiles[i].html_url)
         st.write('Complete')
-except IndexError:
-    st.write(' ')
