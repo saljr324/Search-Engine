@@ -20,7 +20,7 @@ def search_github(keyword, query):
     for file in result:
         contentFiles.append(file)
        
-    for file in result[1:100]:
+    for file in result:
         html_urls.append(file.html_url)
     
     return contentFiles, html_urls
