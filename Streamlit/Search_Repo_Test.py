@@ -33,9 +33,7 @@ title = st.text_input('Keyword(s):', placeholder = 'Enter keyword(s) seperated b
 if title:
     try:
         search_output = search_github(title, 'org:ds-modules extension:ipynb')
-    except RateLimitExceededException:
-        st.write('An Error Has Occurred. Please wait a moment and reload the page.')
-    contentFiles = search_output[0]
+        contentFiles = search_output[0]
     html_urls = search_output[1]
     if len(contentFiles) == 0:
         st.write('None Found')
@@ -55,3 +53,5 @@ if title:
             with tabs[index]:
                 st.write(html_urls[i])
         st.write('Complete')
+    except RateLimitExceededException:
+        st.write('An Error Has Occurred. Please wait a moment and reload the page.')
