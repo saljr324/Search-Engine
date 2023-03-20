@@ -1,6 +1,6 @@
 import numpy as np
 import pandas as pd
-from github import Github, GithubException
+from github import Github, RateLimitExceededException
 import streamlit as st
 import json
 import re
