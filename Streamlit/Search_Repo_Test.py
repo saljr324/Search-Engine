@@ -54,4 +54,4 @@ if title:
                     st.write(html_urls[i])
             st.write('Complete')
     except RateLimitExceededException:
-        st.write('This query is too broad. Please wait 1 minute before refreshing and try again.')
+        st.write('This query is too broad. Please wait 20 seconds and try again.')
