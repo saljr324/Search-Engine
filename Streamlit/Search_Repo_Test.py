@@ -34,24 +34,24 @@ if title:
     try:
         search_output = search_github(title, 'org:ds-modules extension:ipynb')
         contentFiles = search_output[0]
-    html_urls = search_output[1]
-    if len(contentFiles) == 0:
-        st.write('None Found')
-    else:
-        repo_tabs = []
-        for i in range(len(contentFiles)):
-            repo = re.search(r'ds-modules/(.*?)/', html_urls[i]).group(1)
-            if repo not in repo_tabs:
-                repo_tabs.append(repo)
-        
-        st.write(f'Found {len(contentFiles)} Notebooks in {len(repo_tabs)} repositories')
-        tabs = st.tabs(repo_tabs)
-        current_repo = re.search(r'ds-modules/(.*?)/', html_urls[0]).group(1)
-        for i in range(len(contentFiles)):
-            repo = re.search(r'ds-modules/(.*?)/', html_urls[i]).group(1)
-            index = repo_tabs.index(repo)
-            with tabs[index]:
-                st.write(html_urls[i])
-        st.write('Complete')
+        html_urls = search_output[1]
+        if len(contentFiles) == 0:
+            st.write('None Found')
+        else:
+            repo_tabs = []
+            for i in range(len(contentFiles)):
+                repo = re.search(r'ds-modules/(.*?)/', html_urls[i]).group(1)
+                if repo not in repo_tabs:
+                    repo_tabs.append(repo)
+
+            st.write(f'Found {len(contentFiles)} Notebooks in {len(repo_tabs)} repositories')
+            tabs = st.tabs(repo_tabs)
+            current_repo = re.search(r'ds-modules/(.*?)/', html_urls[0]).group(1)
+            for i in range(len(contentFiles)):
+                repo = re.search(r'ds-modules/(.*?)/', html_urls[i]).group(1)
+                index = repo_tabs.index(repo)
+                with tabs[index]:
+                    st.write(html_urls[i])
+            st.write('Complete')
     except RateLimitExceededException:
         st.write('An Error Has Occurred. Please wait a moment and reload the page.')
