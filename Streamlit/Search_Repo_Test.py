@@ -31,7 +31,7 @@ if title:
     if len(contentFiles) == 0:
         st.write('None Found')
     else:
-        html_url_0
+        html_url_0 = contentFiles[0].html_url
         repo_tabs = []
         html_urls = []
         for i in range(len(contentFiles)):
