@@ -31,18 +31,22 @@ if title:
     if len(contentFiles) == 0:
         st.write('None Found')
     else:
+        html_url_0
         repo_tabs = []
+        html_urls = []
         for i in range(len(contentFiles)):
-            repo = re.search(r'ds-modules/(.*?)/', contentFiles[i].html_url).group(1)
+            html_url = contentFiles[i].html_url
+            repo = re.search(r'ds-modules/(.*?)/', html_url).group(1)
+            html_urls.append(html_url)
             if repo not in repo_tabs:
                 repo_tabs.append(repo)
         
         st.write(f'Found {len(contentFiles)} Notebooks in {len(repo_tabs)} repositories')
         tabs = st.tabs(repo_tabs)
-        current_repo = re.search(r'ds-modules/(.*?)/', contentFiles[0].html_url).group(1)
+        current_repo = re.search(r'ds-modules/(.*?)/', html_url_0).group(1)
         for i in range(len(contentFiles)):
-            repo = re.search(r'ds-modules/(.*?)/', contentFiles[i].html_url).group(1)
+            repo = re.search(r'ds-modules/(.*?)/', html_urls[i]).group(1)
             index = repo_tabs.index(repo)
             with tabs[index]:
-                st.write(contentFiles[i].html_url)
+                st.write(html_urls[i])
         st.write('Complete')
