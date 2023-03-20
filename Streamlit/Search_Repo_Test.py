@@ -14,12 +14,16 @@ def search_github(keyword, query):
     query: https://docs.github.com/en/search-github/searching-on-github/searching-code#search-within-a-users-or-organizations-repositories
     '''
     contentFiles = []
+    html_urls = []
     result = client.search_code(keyword + ' ' + query)
  
     for file in result:
         contentFiles.append(file)
+       
+    for file in result[1:100]:
+        html_urls.append(file.html_url)
     
-    return contentFiles
+    return contentFiles, html_urls
 
 st.title('Jupyter Notebook Search Engine')
 st.caption('For use on github.com/ds-modules')
@@ -27,23 +31,21 @@ st.subheader('What topic are you looking for?')
 title = st.text_input('Keyword(s):', placeholder = 'Enter keyword(s) seperated by comma')
 
 if title:
-    contentFiles = search_github(title, 'org:ds-modules extension:ipynb')
+    search_output = search_github(title, 'org:ds-modules extension:ipynb')
+    contentFiles = search_output[0]
+    html_urls = search_output[1]
     if len(contentFiles) == 0:
         st.write('None Found')
     else:
-        html_url_0 = contentFiles[0].html_url
         repo_tabs = []
-        html_urls = []
         for i in range(len(contentFiles)):
-            html_url = contentFiles[i].html_url
-            repo = re.search(r'ds-modules/(.*?)/', html_url).group(1)
-            html_urls.append(html_url)
+            repo = re.search(r'ds-modules/(.*?)/', html_urls[i]).group(1)
             if repo not in repo_tabs:
                 repo_tabs.append(repo)
         
         st.write(f'Found {len(contentFiles)} Notebooks in {len(repo_tabs)} repositories')
         tabs = st.tabs(repo_tabs)
-        current_repo = re.search(r'ds-modules/(.*?)/', html_url_0).group(1)
+        current_repo = re.search(r'ds-modules/(.*?)/', html_urls[0]).group(1)
         for i in range(len(contentFiles)):
             repo = re.search(r'ds-modules/(.*?)/', html_urls[i]).group(1)
             index = repo_tabs.index(repo)
