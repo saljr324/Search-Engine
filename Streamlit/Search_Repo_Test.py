@@ -34,12 +34,17 @@ if title:
         html_url_0 = contentFiles[0].html_url
         repo_tabs = []
         html_urls = []
+        count = 0 
         for i in range(len(contentFiles)):
-            html_url = contentFiles[i].html_url
-            repo = re.search(r'ds-modules/(.*?)/', html_url).group(1)
-            html_urls.append(html_url)
-            if repo not in repo_tabs:
-                repo_tabs.append(repo)
+            if count >= 500:
+                break
+            else:
+                count += 1
+                html_url = contentFiles[i].html_url
+                repo = re.search(r'ds-modules/(.*?)/', html_url).group(1)
+                html_urls.append(html_url)
+                if repo not in repo_tabs:
+                    repo_tabs.append(repo)
         
         st.write(f'Found {len(contentFiles)} Notebooks in {len(repo_tabs)} repositories')
         tabs = st.tabs(repo_tabs)
