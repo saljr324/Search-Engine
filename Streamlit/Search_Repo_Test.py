@@ -1,6 +1,6 @@
 import numpy as np
 import pandas as pd
-from github import Github
+from github import Github, GithubException
 import streamlit as st
 import json
 import re
@@ -33,7 +33,7 @@ title = st.text_input('Keyword(s):', placeholder = 'Enter keyword(s) seperated b
 if title:
     try:
         search_output = search_github(title, 'org:ds-modules extension:ipynb')
-    except RateLimitExceededException:
+    except GithubException.RateLimitExceededException:
         st.write('An Error Has Occurred. Please wait a moment and reload the page.')
     contentFiles = search_output[0]
     html_urls = search_output[1]
